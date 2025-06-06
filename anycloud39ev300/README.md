@@ -59,83 +59,83 @@ Execute sequentially in the kernel directory：
 	# make O=../build cloud39ev3_xx_defconfig
 	# make O=../build -j4 uImage
 ```
-生成uImage内核镜像文件，在build/arch/arm/boot 路径下。
-*	如果直接在kernel目录下执行make clean会删除lib目录下的库文件，建议在kernel的同级目录下，新建一个build目录。
-*	make O=../build -j4 uImage 这种方式编译时，是不会编译驱动modules的那些ko文件的，若需要有几种方法：
-a、	可以先不加uImage 直接make O=../build -j4 编译出zImage ，同时会编译modules，再用make O=../build -j4 uImage命令编译出uImage。
-b、	在make O=../build -j4 uImage命令后面再加上 modules指定目标，make O=../bd -j4 uImage modules。
-c、	分开编译，用make O=../bd -j4 modules编译驱动modules，用make O=../build -j4 uImage编译内核。
+Generate uImage kernel image file in the build/arch/arm/boot path.
+*	If you execute make clean directly in the kernel directory, the library files in the lib directory will be deleted. It is recommended to create a build directory in the same directory as kernel.
+*	make O=../build -j4 uImage When compiling in this way, the ko files that drive the modules will not be compiled. If you need to, there are several ways：
+a、	You can compile zImage directly without adding uImage, and then compile modules with make O=../build -j4 uImage command to compile uImage.
+b、	Add modules to the end of the make O=../build -j4 uImage command to specify the target, make O=../bd -j4 uImage modules.
+c、	Compile separately, use make O=../bd -j4 modules to compile the driver modules, and use make O=../build -j4 uImage to compile the kernel.
 		
-2. 应用程序云平台配置
-针对主应用程序anyka_ipc需要进行编译配置，配置文件的路径为platform/config.mk.因不同的云平台的网络配置方式不同，暂时未考虑多云平台的同时运行支持，仅可开启一种云平台支持。运择云平台配置后还要选择是否支持Wi-Fi配置。下面介绍配置项，设置y为开启，n主关闭：
+2. Application cloud platform configuration
+The main application anyka_ipc needs to be compiled and configured. The path of the configuration file is platform/config.mk. Due to the different network configuration methods of different cloud platforms, the simultaneous operation support of multiple cloud platforms is not considered for the time being. Only one cloud platform support can be enabled. After selecting the cloud platform configuration, you also need to choose whether to support Wi-Fi configuration. The following describes the configuration items. Set y to enable and n to disable.：
 ```sh
-	CONFIG_DANA_SUPPORT         = y           // 大拿编译配置项（默认）
-	CONFIG_RTSP_SUPPORT         = n           // RTSP 功能
-	CONFIG_ONVIF_SUPPORT        = n           // ONVIF平台
-	CONFIG_ONVIF_AUDIO_SUPPORT  = n           // ONVIF平台是否支持音频输入
+	CONFIG_DANA_SUPPORT         = y           // Dana compilation configuration items (default)
+	CONFIG_RTSP_SUPPORT         = n           // RTSP Function
+	CONFIG_ONVIF_SUPPORT        = n           // ONVIF Platform
+	CONFIG_ONVIF_AUDIO_SUPPORT  = n           // Does the ONVIF platform support audio input?
 ```
-若platform/config.mk里的配置打开，应用的代码里，相应的宏定义也会被定义。比如platform/config.mk里CONFIG_DANA_SUPORT =y，那么应用代码里的宏CONFIG_DANA_SUPPORT也会被定义，在预处理#ifdef CONFIG_DANA_SUPPORT里面的代码将被编译。
-注意：ONVIF配置项和RTSP及DANA配置项冲突，不能同时设为y，但RTSP配置项和DANA配置项不冲突，可以同时为y
+If the configuration in platform/config.mk is turned on, the corresponding macro definition will also be defined in the application code. For example, if CONFIG_DANA_SUPORT = y in platform/config.mk, then the macro CONFIG_DANA_SUPPORT in the application code will also be defined, and the code in the preprocessor #ifdef CONFIG_DANA_SUPPORT will be compiled.
+Note: ONVIF configuration items conflict with RTSP and DANA configuration items and cannot be set to y at the same time, but RTSP configuration items do not conflict with DANA configuration items and can be y at the same time
 
-3. 文件系统配置
-文件系统的配置文件platform/rootfs/platform.cfg会自动根据platform/config.mk里的配置来编译相应目录的云平台的文件系统。在platform/config.mk里配置utils开关，默认不打开。若没有打开，rootfs/utils目录下的调试/测试工具是不会被拷贝到rootfs下的。
+3. File system configuration
+The file system configuration file platform/rootfs/platform.cfg will automatically compile the cloud platform file system of the corresponding directory according to the configuration in platform/config.mk. Configure the utils switch in platform/config.mk, which is not turned on by default. If it is not turned on, the debugging/testing tools in the rootfs/utils directory will not be copied to the rootfs.
 ```sh
-CONFIG_UTILS_SUPPORT = n         //utils配置开关
+CONFIG_UTILS_SUPPORT = n         //utils configuration switches
 ```
 
-在platform目录下顺序执行：
+Execute in sequence in the platform directory:
 ```sh
-	# make clean                      //清理旧的编译结果
-	# make                            //编译所有目标，包括动态库
-	# make install                    //生成rootfs根文件系统目录内容，包括拷贝已编译好的应用程序
-	# make image                      //打包rootfs目录成镜像文件(root.sqsh4、usr.sqsh4、usr.jffs2)
+# make clean //Clean up old compilation results
+# make //Compile all targets, including dynamic libraries
+# make install //Generate the rootfs root file system directory content, including copying the compiled application
+# make image //Pack the rootfs directory into a mirror file (root.sqsh4, usr.sqsh4, usr.jffs2)
 ```
-最终在rootfs目录下生成root.sqsh4、usr.sqsh4和usr.jffs2三个文件系统镜像文件
+Finally, three file system image files, root.sqsh4, usr.sqsh4 and usr.jffs2, are generated in the rootfs directory
 
-## 第四章 系统运行配置
-系统运行配置主要包括以下文件
-1. anyka_cfg.ini配置文件为主应用程序提供各项配参数
-2. danale.conf配置文件保存大拿平台的设备登录信息
-3. isp_xx.conf等是ISP参数配置文件
-注意：详细参数配置请参考《Cloud39EV300平台用户开发手册_V1.0.0》
+## Chapter 4 System Operation Configuration
+The system operation configuration mainly includes the following files
+1. The anyka_cfg.ini configuration file provides various configuration parameters for the main application
+2. The danale.conf configuration file saves the device login information of the Danale platform
+3. isp_xx.conf and others are ISP parameter configuration files
+Note: For detailed parameter configuration, please refer to "Cloud39EV300 Platform User Development Manual_V1.0.0"
 
-## 第五章 安装及升级开发板
-1. 烧写镜像文件
-注意：以下内容简要介绍了开发板的烧录过程，详细内容请参考《Cloud39EV200平台开发板使用说明》
-* 检查底板板上的JP4和JP10跳线是否已配置为USB烧录模式，即：USB_DP->AK_DP，USB_DM->AK_DM。
-* 把编译生成的uImage、root.sqsh4、usr.jffs2、usr.sqsh4四个文件拷贝到烧录工具的目录下；
-* 运行PDK配套的BurnTool烧录工具。
-* 使用USB线连接开发的USB接口到PC USB端口。
-* 按USB供电开关接通开发板电源
-* 长按底板上的【BOOT】键，同时短按芯片核心板上的【RESET】键，待烧录工具进入烧录模式（对应通道状态变黄色）后再松开【BOOT】键。
-* 在烧录工具界面，单击“开始”按钮，执行烧录，等待烧录完成。
-* 烧录成功后，短按芯片板上的【RESET】键复位并开机。
+## Chapter 5 Install and upgrade the development board
+1. Burn the image file
+Note: The following content briefly introduces the burning process of the development board. For details, please refer to the "Cloud39EV200 Platform Development Board User Manual"
+* Check whether the JP4 and JP10 jumpers on the baseboard are configured as USB burning mode, that is: USB_DP->AK_DP, USB_DM->AK_DM.
+* Copy the four files uImage, root.sqsh4, usr.jffs2, and usr.sqsh4 generated by the compilation to the directory of the burning tool;
+* Run the BurnTool burning tool that comes with the PDK.
+* Use a USB cable to connect the developed USB interface to the PC USB port.
+* Press the USB power switch to turn on the power of the development board
+* Long press the [BOOT] button on the baseboard, and short press the [RESET] button on the chip core board at the same time. Release the [BOOT] button after the burning tool enters the burning mode (the corresponding channel status turns yellow).
+* In the burning tool interface, click the "Start" button to execute burning and wait for burning to complete.
+* After burning is successful, short press the [RESET] button on the chip board to reset and boot.
 
-2. 开发板镜像升级
-注意：可以通过TF卡或者网络进行升级
-* 将编译生成的uImage、root.sqsh4、usr.jffs2、usr.sqsh4文件(根据需要放对应的镜像文件即可)通过TF卡或者网络放到开发板上的/tmp目录
-* 执行update.sh命令，等待升级完成重启即可。
+2. Development board image upgrade
+Note: You can upgrade through TF card or network
+* Put the compiled uImage, root.sqsh4, usr.jffs2, usr.sqsh4 files (just put the corresponding image files as needed) into the /tmp directory on the development board through TF card or network
+* Execute the update.sh command and wait for the upgrade to complete and restart.
 
-## 第六章 常用开发环境配置
-1. 如何使用NFS文件系统启动
-* 在开发阶段，推荐使用NFS作为开发环境，可以省去重新制作和烧写根文件系统的工作。
-* 挂载NFS文件系统的操作命令：
+## Chapter 6 Common Development Environment Configuration
+1. How to use NFS file system to start
+* During the development stage, it is recommended to use NFS as the development environment, which can save the work of remaking and burning the root file system.
+* Operation command to mount the NFS file system:
 ```sh
-		# mount -t nfs -o nolock -o tcp xx.xx.xx.xx:/your-nfs-path /mnt
+# mount -t nfs -o nolock -o tcp xx.xx.xx.xx:/your-nfs-path /mnt
 ```
-* 然后就可以在/mnt目录下访问服务器上的文件，并进行开发工作。
-	
-2. 如何运行停止主程序
-注意：默认情况下主程序在/usr/bin目录，可执行文件名为anyka_ipc
-停止主程序可以使用两种方法：
-* 方法一：使用脚本停止服务，执行service.sh stop命令即可停止正在运行的程序（包括anyka_ipc及daemon等）
-* 方法二：使用kill或killall命令直接杀掉进程（注意需要先kill掉daemon进程，然后再kill掉anyka_ipc进程）
+* Then you can access the files on the server in the /mnt directory and perform development work.
 
-启动主程序：
-手工启动主程序主要是为了方便使用NFS文件系统进行调试，用户需要通过NFS文件系统将待调试程序挂载到开发板，然后切换到待调试程序所在的目录执行程序，例如：./anyka_ipc &
+2. How to run and stop the main program
+Note: By default, the main program is in the /usr/bin directory, and the executable file is named anyka_ipc
+There are two ways to stop the main program:
+* Method 1: Use a script to stop the service. Execute the service.sh stop command to stop the running program (including anyka_ipc and daemon, etc.)
+* Method 2: Use the kill or killall command to kill the process directly (note that you need to kill the daemon process first, and then kill the anyka_ipc process)
 
-3. 开启telnet服务
- 网络正常后，一般情况下telnet服务已经开启；如未开启，运行命令 telnetd& 就可以启动单板telnet服务，使用telnet即可登录到单板。
-	
-4. 开启log打印
-执行tail -F /var/log/message&开启log打印。
+Start the main program:
+Manually starting the main program is mainly to facilitate debugging using the NFS file system. Users need to mount the program to be debugged to the development board through the NFS file system, and then switch to the directory where the program to be debugged is located to execute the program, for example: ./anyka_ipc &
+
+3. Enable telnet service
+After the network is normal, the telnet service is generally enabled; if it is not enabled, run the command telnetd& to start the single-board telnet service, and use telnet to log in to the single board.
+
+4. Enable log printing
+Execute tail -F /var/log/message& to enable log printing.
