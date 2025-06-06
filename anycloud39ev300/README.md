@@ -1,59 +1,59 @@
-CLOUD39EV300平台SDK使用Quick Start Guide
+CLOUD39EV300 Platform SDK Quick Start Guide
 ===
 
-## 第一章 Quick Start Guide文档概述
-该文档使用对象为产品的软件开发工程师，用于帮助工程师了解SDK相关内容，并快速上手进行开发。
+## Chapter 1 Quick Start Guide Document Overview
+This document is intended for product software development engineers to help them understand SDK-related content and quickly get started with development.
     
-## 第二章 首次安装使用SDK
-1. SDK包格式及版本説明
-SDK是一个压缩包，命名一般如：CLOUD39EV300_SDK_Vx.x.x.tgz，使用命令：tar -zxf CLOUD39EV300_SDK_Vx.x.x.tgz进行解压缩，可以得到一个CLOUD39EV300_SDK_Vx.x.x目录，即是SDK目录。
+## Chapter 2 Installing and Using SDK for the First Time
+1. SDK package format and version description
+SDK is a compressed package, usually named like: CLOUD39EV300_SDK_Vx.x.x.tgz. Use the command: tar -zxf CLOUD39EV300_SDK_Vx.x.x.tgz to decompress it, and you will get a CLOUD39EV300_SDK_Vx.x.x directory, which is the SDK directory.
 
-2. SDK目录介绍
+2. SDK Directory Introduction
 ```
 CLOUD39EV300_SDK_Vx.x.x
 ├── doc
-│   ├── Cloud39EV300内核配置及修改手册_V1.0.0.pdf
-│   └── Cloud39EV300平台用户开发手册_V1.0.0.pdf
+│   ├── Cloud39EV300Kernel Configuration and Modification Manual_V1.0.0.pdf
+│   └── Cloud39EV300Platform User Development Manual_V1.0.0.pdf
 ├── kernel
 ├── platform
 │   ├── apps
-│   │   ├── akipc                          # 主应用程序，负责音视频采集编码、网络发送和本地录像等功能。
-│   │   ├── ccli                           # 动态获取和设置应用进程的运行状态
-│   │   ├── cmd_serverd                    # 监听和接收其它进程的shell调用请求，并发起对shell命令的调用
-│   │   ├── daemon                         # 后台守护程序，负责： 监测anyka_ipc的运行，对异常退出、内存泄露和内核死锁等情况做恢复处理。 T卡插拔检测和按键处理
+│   │   ├── akipc                          # The main application is responsible for audio and video acquisition encoding, network transmission, local recording and other functions.
+│   │   ├── ccli                           # Dynamically obtain and set the running status of the application process
+│   │   ├── cmd_serverd                    # Monitor and receive shell call requests from other processes, and initiate calls to shell commands
+│   │   ├── daemon                         # Background daemon, responsible for: Monitoring the operation of anyka_ipc, recovering from abnormal exit, memory leak and kernel deadlock, etc. T card plug-in detection and key processing
 │   │   ├── disk_repair
 │   │   ├── Makefile
-│   │   ├── mmc_test                       # TF卡测试程序
-│   │   ├── product_test                   # 产测程序，主要完成图像、音频、wifi 和T卡等硬件的测试，以及完成 uid和mac 地址的烧写
-│   │   ├── updater                        # 升级程序，可以升级boot、内核、文件系统镜像以及升级包。对于内核的升级，要区分 uImage 和zImage的混升情况，避免出错
+│   │   ├── mmc_test                       # TF card test program
+│   │   ├── product_test                   # Production test program, mainly completes the testing of hardware such as image, audio, wifi and T card, as well as completes the burning of uid and mac addresses
+│   │   ├── updater                        # The upgrade program can upgrade the boot, kernel, file system image and upgrade package. For kernel upgrade, it is necessary to distinguish between uImage and zImage to avoid mistakes.
 │   │   └── version
 │   ├── ChangeLog
 │   ├── config.mk
-│   ├── libapp                             # 应用层
-│   ├── libmpi                             # 多媒体层
-│   ├── libplat                            # 平台层
+│   ├── libapp                             # Application Layer
+│   ├── libmpi                             # Multimedia layer
+│   ├── libplat                            # Platform Layer
 │   ├── Makefile
-│   └── rootfs                             # 文件系统
+│   └── rootfs                             # File System
 ├── Quick Start Guide.txt
 └── tools
-    ├── anyka_uclibc_gcc.tar.bz2           # 交叉编译工具
-    ├── arm-anykav200-gdb-7.12.tar.gz      # gdb调试工具
-    └── burntool                           # 烧录工具
+    ├── anyka_uclibc_gcc.tar.bz2           # Cross-compilation tools
+    ├── arm-anykav200-gdb-7.12.tar.gz      # gdb debugging tool
+    └── burntool                           # Burning tool
 ```        
 
-3. 在Linux服务器上安装并配置交叉编译环境
-* 交叉编译工具位于SDK的tools目录，安凯提供的工具链的压缩包名称为anyka_uclibc_gcc.tar.bz2，
-* 用root用户权限在根目录下执行下面命令解压
+3. Install and configure the cross-compilation environment on the Linux server
+* The cross-compilation tool is located in the tools directory of the SDK. The compressed package name of the tool chain provided by Ankai is anyka_uclibc_gcc.tar.bz2，
+* Execute the following command in the root directory with root user privileges to decompress
 ```sh
 # tar -Pxvf  anyka_uclibc_gcc.tar.bz2 
 ```
-解压后工具链会安装在目录/opt/arm-anykav200-crosstool/下。工具链使用的是绝对路径，必须放在这个目录下才可正常运行，不能修改目录及文件的名字。
-* 设置主机PATH环境变量：用export PATH=$PATH:/opt/arm-anykav200-crosstool/usr/bin添加到系统的PATH变量，也可以添加到系统的启动脚本中，可以修改/etc/environment或/etc/bash.bashrc等文件。
-* 工具链确认：安装好后执行arm-anykav200-linux-uclibcgnueabi-gcc  –v 系统能找到命令并显示gcc的版本信息说明工具安装正确。
+After decompression, the toolchain will be installed in the directory /opt/arm-anykav200-crosstool/. The toolchain uses an absolute path and must be placed in this directory to run properly. The directory and file names cannot be modified.
+* Set the host PATH environment variable: Use export PATH=$PATH:/opt/arm-anykav200-crosstool/usr/bin to add it to the system's PATH variable. You can also add it to the system's startup script and modify files such as /etc/environment or /etc/bash.bashrc.
+* Tool chain confirmation: After installation, execute arm-anykav200-linux-uclibcgnueabi-gcc –v. The system can find the command and display the version information of gcc, indicating that the tool is installed correctly.
 
-## 第三章 内核及平台编译配置选项
-1. 内核配置选项
-在kernel目录下顺序执行：
+## Chapter 3 Kernel and Platform Compilation Configuration Options
+1. Kernel Configuration Options
+Execute sequentially in the kernel directory：
 ```sh
 	# mkdir ../build
 	# make O=../build cloud39ev3_xx_defconfig
