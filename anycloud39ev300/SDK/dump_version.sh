@@ -139,7 +139,7 @@ dump_ver ${PWD}/kernel/lib/libakaudiofilter_kern.a              "${PWD}/platform
 
                          
                          
-### 软件ipc_main
+### Software ipc_main
 dump_ver ${PWD}/platform/apps/akipc/main/ipc_main.c     "${PWD}/platform/apps/akipc/main/ipc_main.c"     "AK_VERSION_SOFTWARE" 
 ### uboot
 
