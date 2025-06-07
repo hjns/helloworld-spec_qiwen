@@ -1,77 +1,77 @@
-连接
+connect
 
-·         target remote -- 远程连接
+·         target remote -- remote connection
 
-·         file -- 加载符号表
+·         file -- Loading symbol table
 
-·         load -- 加载程序
+·         load -- Loader
 
-·         attach -- 挂接到已在运行的进程来调试
-
-
-断点
-
-观察点
-
-·         break -- 在指定的行或函数处设置断点，缩写为 b
-
-·         info breakpoints -- 打印未删除的所有断点，观察点和捕获点的列表，缩写为 i b
-
-·         disable -- 禁用断点，缩写为 dis
-
-·         enable -- 启用断点
-
-·         clear -- 清除指定行或函数处的断点
-
-·         delete -- 删除断点，缩写为 d
-
-·         tbreak -- 设置临时断点，参数同 break，但在程序第一次停住后会被自动删除
-
-·         watch -- 为表达式（或变量）设置观察点，当表达式（或变量）的值有变化时，暂停程序执行
+·         attach -- Hook into an already running process to debug
 
 
-调试跟踪
+Breakpoints
 
-·         step -- 单步跟踪，如果有函数调用，会进入该函数，缩写为 s
+Observation Point
 
-·         step i -- 单步跟踪汇编代码，缩写为si
+·         break -- Set a breakpoint at the specified line or function, abbreviated as b
 
-·         next -- 单步跟踪，如果有函数调用，不会进入该函数，缩写为 n
+·         info breakpoints -- Print a list of all breakpoints, watchpoints, and catchpoints that have not been deleted, abbreviated as i b
 
-·         next i -- 单步跟踪汇编代码，缩写为ni
+·         disable -- Disable breakpoints, abbreviated as dis
 
-·         run -- 启动被调试的程序，缩写为 r
+·         enable -- Enable breakpoints
 
-·         return -- 使选定的栈帧返回到其调用者
+·         clear -- Clear breakpoints at the specified line or function
 
-·         finish -- 执行直到选择的栈帧返回，缩写为 fin
+·         delete -- Delete breakpoint, abbreviated as d
 
-·         until -- 执行直到达到当前栈帧中当前行后的某一行（用于跳过循环、递归函数调用），缩写为 u
+·         tbreak -- Set a temporary breakpoint, the parameters are the same as break, but it will be automatically deleted after the program stops for the first time
 
-·         continue -- 恢复程序执行，缩写为 c
-
-
-查看
-
-·         backtrace -- 查看程序调用栈的信息，缩写为 bt
-
-·         print -- 打印表达式 EXP 的值，缩写为 p
-
-·         x -- 查看内存，比如x /8fx 0x80000000以16进制显示地址0x80000000的8个字节数据
-
-·         display -- 每次程序停止时打印表达式 EXP 的值（自动显示）
-
-·         info display -- 打印早先设置为自动显示的表达式列表
-
-·         info register – 查看cpu寄存器状态
-
-·         ptype -- 打印类型 TYPE 的定义
+·         watch -- Set a watchpoint for an expression (or variable) and pause program execution when the value of the expression (or variable) changes
 
 
-设置
+Debug Tracing
 
-·         set args -- 设置调试程序的参数
+·         step -- Single-step tracing, if there is a function call, it will enter the function, abbreviated as s
 
-·         set var -- 设置变量值
+·         step i -- Single-step tracking assembly code, abbreviated as si
 
-·         frame -- 选择栈帧
+·         next -- Single-step tracing, if there is a function call, it will not enter the function, abbreviated as n
+
+·         next i -- Single-step trace assembly code, abbreviated as ni
+
+·         run -- Start the debugged program, abbreviated as r
+
+·         return -- Causes the selected stack frame to return to its caller
+
+·         finish -- Execute until the selected stack frame returns, abbreviated as fin
+
+·         until -- Execute until a line after the current line in the current stack frame is reached (used to skip loops and recursive function calls), abbreviated as u
+
+·         continue -- Resume program execution, abbreviated as c
+
+
+Check
+
+·         backtrace -- View the program call stack information, abbreviated as bt
+
+·         print -- Print the value of the expression EXP, abbreviated as p
+
+·         x -- View memory, for example, x /8fx 0x80000000 displays 8 bytes of data at address 0x80000000 in hexadecimal.
+
+·         display -- Print the value of expression EXP each time the program stops (automatically displayed)
+
+·         info display -- Prints a list of expressions that were previously set to be displayed automatically
+
+·         info register – Check the CPU register status
+
+·         ptype -- Definition of print type TYPE
+
+
+setup
+
+·         set args -- Setting debugger parameters
+
+·         set var -- Setting variable values
+
+·         frame -- Select stack frame
