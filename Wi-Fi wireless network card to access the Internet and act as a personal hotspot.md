@@ -1,103 +1,96 @@
-### ifi无线网卡访问互联网和作为个人热点
+### ifi wireless network card accesses the Internet and serves as a personal hotspot
 
-嵌入式设备想要联网，有有线和无线两种方式
+There are two ways for embedded devices to connect to the Internet: wired and wireless
 
-有线就是插上网卡，接入网线
+Wired means plugging in a network card and connecting to a network cable
 
-无线网卡有两种：usb wifi、sdio wifi
+There are two types of wireless network cards: USB WiFi and SDIO WiFi
 
-usb wifi使用usb接口( Universal Serial Bus),是连接计算机系统与外部设备的一种串口总线 标准 
+USB WiFi uses the USB interface (Universal Serial Bus), which is a serial bus standard that connects computer systems and external devices
 
-sdio wifi使用sdio接口，是在sd内存卡接口基础上发展的接口 
+SDIO WiFi uses the SDIO interface, which is an interface developed on the basis of the SD memory card interface
 
-### wifi 网卡有两种工作模式：
+### WiFi network cards have two working modes:
 
-### 无线终端模式(STA) :通过该模式连接网络上网
+### Wireless terminal mode (STA): Connect to the Internet through this mode
 
-### 无线热点模式(AP)：通过这个模式产生热点给其他设备上网
+### Wireless hotspot mode (AP): Generate a hotspot through this mode for other devices to access the Internet
 
-### 无线网络的安全性由两部分组成：认证和加密
+### The security of a wireless network consists of two parts: authentication and encryption
 
-认证：使得只有运行的设备才能连接到无线网络
+Authentication: Only running devices can connect to the wireless network
 
-加密：确保数据的保密性和完整性，确保数据在传输中不会被篡改
+Encryption: Ensure the confidentiality and integrity of data and ensure that data will not be tampered with during transmission
 
-| 安全策略 |   认证方式    |       加密方式       |          备注          |
+|Security policy | Authentication method | Encryption method | Remarks |
 | :------: | :-----------: | :------------------: | :--------------------: |
-|   open   |     open      |         open         |  开放wifi,无任何加密   |
-|   open   |      WEP      | 开放wifi,仅数据加密  |                        |
-|   WEP    |      WEP      |         WEP          | 共享密钥认证，容易破解 |
-|   WAP    |   8002.11x    |       TKIP/WEP       |   比较安全，用于企业   |
-|   PSK    |   TKIP/WEP    |  比较安全，用于个人  |                        |
-|   WAP2   |    802.11X    |    CCMP/TKIP/WEP     |  目前最安全，用于个人  |
-|   PSK    | CCMP/TKIP/WEP | 目前最安全，用于个人 |                        |
+| open | open | open | Open wifi, no encryption |
+| open | WEP | Open wifi, data encryption only | |
+| WEP | WEP | WEP | Shared key authentication, easy to crack |
+| WAP | 8002.11x | TKIP/WEP | Relatively safe, for enterprise |
+| PSK | TKIP/WEP | Relatively safe, for personal | |
+| WAP2 | 802.11X | CCMP/TKIP/WEP | Currently the most secure, for personal |
+| PSK | CCMP/TKIP/WEP | Currently the most secure, for personal | |
 
-​		连入超市等公共场合wifi的时候，不需要输入密码，但要通过网页输入手机号，使用验证码验证，也就是采用802.11x进行验证，然后通过服务器完成的验证
+​ When connecting to public wifi in supermarkets, you do not need to enter a password, but you need to enter your mobile phone number through the web page and use the verification code to verify, that is, use 802.11x for verification, and then complete the verification through the server
 
-​		使用手机开启个人热点时候，可以选择open、wep、wap、wap2不同的安全等级
+​ When using a mobile phone to open a personal hotspot, you can choose different security levels of open, wep, wap, and wap2
 
-### 想要使用无线网卡，需要用到的命令
+### If you want to use a wireless network card, you need to use the command
 
-iw:可用于open、wep两种“认证/加密”，以及扫描WiFi热点,可取代 iwconfig
+iw: can be used for open and wep "authentication/encryption", as well as scanning WiFi hotspots, and can replace iwconfig
 
-wpa_supplicant:可用于前面4中“认证/加密”，是一个连接、配置wifi的工具
+wpa_supplicant: can be used for the previous 4 "authentication/encryption", it is a tool for connecting and configuring WiFi
 
-hostapd:能够使得无线网卡切换为ap模式
+hostapd: can switch the wireless network card to AP mode
 
-dhcp:STA模式使wifi动态获取ip，ap模式分配ip
+dhcp: STA mode allows WiFi to dynamically obtain IP, and AP mode allocates IP
 
-ifconfig:配置网卡信息
+ifconfig: configure network card information
 
-iwconfig:用于系统配置无线网络设备或显示无线网络设备信息
+iwconfig: used for system configuration of wireless network devices or display of wireless network device information
 
-iwlist:对/proc/net/wireless文件进行分析，得出无线网卡相关信息
+iwlist: analyze the /proc/net/wireless file to obtain wireless network card related information
 
 route:
 
 ### ifconfig
 
-简单分析
-
+Simple analysis
 ```
 [root@localhost ~]# ifconfig eth0
  
-// UP：表示“接口已启用”。
-// BROADCAST ：表示“主机支持广播”。
-// RUNNING：表示“接口在工作中”。
-// MULTICAST：表示“主机支持多播”。
-// MTU:1500（最大传输单元）：1500字节
+// UP: means "interface is enabled".
+// BROADCAST: means "host supports broadcast".
+// RUNNING: means "interface is working".
+// MULTICAST: means "host supports multicast".
+// MTU:1500 (maximum transmission unit): 1500 bytes
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST> mtu 1500
- 
- 
-// inet ：网卡的IP地址。
-// netmask ：网络掩码。
-// broadcast ：广播地址。
+
+// inet: IP address of the network card.
+// netmask: network mask.
+// broadcast: broadcast address.
 inet 192.168.1.135 netmask 255.255.255.0 broadcast 192.168.1.255
- 
- 
-// 网卡的IPv6地址
+
+// IPv6 address of the network card
 inet6 fe80::2aa:bbff:fecc:ddee prefixlen 64 scopeid 0x20<link>
- 
-// 连接类型：Ethernet (以太网) HWaddr (硬件mac地址)
-// txqueuelen (网卡设置的传送队列长度)
+// Connection type: Ethernet (Ethernet) HWaddr (hardware mac address)
+// txqueuelen (transmit queue length set by the network card)
 ether 00:aa:bb:cc:dd:ee txqueuelen 1000 (Ethernet)
- 
- 
-// RX packets 接收时，正确的数据包数。
-// RX bytes 接收的数据量。
-// RX errors 接收时，产生错误的数据包数。
-// RX dropped 接收时，丢弃的数据包数。
-// RX overruns 接收时，由于速度过快而丢失的数据包数。
-// RX frame 接收时，发生frame错误而丢失的数据包数。
+
+// RX packets The number of correct packets when receiving.
+// RX bytes The amount of data received.
+// RX errors The number of packets with errors when receiving.
+// RX dropped The number of packets dropped when receiving.
+// RX overruns The number of packets lost due to excessive speed when receiving.
+// RX frame The number of packets lost due to frame errors when receiving.
 RX packets 2825 bytes 218511 (213.3 KiB)
 RX errors 0 dropped 0 overruns 0 frame 0
- 
- 
- 
-// TX packets 发送时，正确的数据包数。
-// TX bytes 发送的数据量。
-// TX errors 发送时，产生错误的数据包数。
-// TX dropped 发送时，丢弃的数据包数。
+
+// TX packets The number of correct packets when sending.
+// TX bytes The amount of data sent.
+// TX errors The number of packets with errors when sending.
+// TX dropped The number of packets dropped when sending.
 // TX overruns 发送时，由于速度过快而丢失的数据包数。
 // TX carrier 发送时，发生carrier错误而丢失的数据包数。
 // collisions 冲突信息包的数目。
@@ -105,72 +98,72 @@ TX packets 1077 bytes 145236 (141.8 KiB)
 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
 ```
 
-简单用例
+Simple use case
 
-显示激活的网卡信息
+Display activated network card information
 
 ```
 ifconfig
 ```
 
-显示所有网卡信息
+Display all network card information
 
 ```
 ifconfig -a
 ```
 
-启动/停止     有线/无线  网卡
+Start/stop wired/wireless network card
 
 ```
 ifconfig wlan0/eth0 up/down
 ```
 
-配置ip、子网掩码 
+Configure ip, subnet mask
 
 ```
-//配置ip地址
-ifconfig  eth0 192.168.1.100
+//Configure IP address
+ifconfig eth0 192.168.1.100
 
-//配置ip地址和子网掩码
-ifconfig eth0  192.168.1.100 netmask 255.255.255.0
+//Configure IP address and subnet mask
+ifconfig eth0 192.168.1.100 netmask 255.255.255.0
 ```
 
 ### iwconfig
 
-用于系统配置无线网络设备或显示无线网络设备信息，iwconfig命令类似与于ifconfig命令，但它的配置对象是无线网卡
+Used for system configuration of wireless network devices or display of wireless network device information, the iwconfig command is similar to the ifconfig command, but its configuration object is the wireless network card
 
 ```
-auto	自动模式 
-essid	设置essid
-nwid	设置网络id
-freq	设置无线网络信道
-chanel	设置无线网络信道
-mode	设置无线网络设备的通信设备
+auto automatic mode
+essid Set essid
+nwid Set network id
+freq Set wireless network channel
+chanel Set wireless network channel
+mode Set communication device of wireless network device
 ```
 
 ### iwlist
 
-简单用例
+Simple use case
 
-搜索当前无线网络
+Search for current wireless network
 
 ```
 iwlist wlan0 scanning
 ```
 
-显示频道信息 
+Display channel information
 
 ```
 iwlist wlan0 frequen
 ```
 
-显示连接速度
+Display connection speed
 
 ```
 iwlist wlan0 rate
 ```
 
-显示热点信息
+Show hotspot information
 
 ```
 iwlist wlan0 ap
@@ -178,36 +171,36 @@ iwlist wlan0 ap
 
 ### iw
 
-iw是一种新的基于 nl80211 的用于无线设备的ctl配置实用程序。它支持最近已添加到内核所有新的驱动程序 
+iw is a new nl80211 based ctl configuration utility for wireless devices. It supports all new drivers that have been added to the kernel recently
 
-简单用例 
+Simple use case
 
-列出wifi网卡的性能
+List the performance of the wifi card
 
 ```
 iw list
 ```
 
-扫描wifi热点
+Scan wifi hotspots
 
 ```
 iw dev wlan0 scan
 iw dev wlan0 scan | grep SSID
 ```
 
-连接到开放ap
+Connect to an open AP
 
 ```
 iw wlan0 connect hceng
 ```
 
-查看连接状态
+Check connection status
 
 ```
 iw wlan0 link
 ```
 
-断开wifi连接
+Disconnect wifi connection
 
 ```
 iw wlan0 disconnect
@@ -215,11 +208,11 @@ iw wlan0 disconnect
 
 ### wpa_supplicant
 
-wpa_supplicant 主要包含wpa_supplicant(命令行模式)和wpa_cli(交互模式)两个程序 
+wpa_supplicant mainly includes two programs: wpa_supplicant (command line mode) and wpa_cli (interactive mode)
 
-简单用例：连接开放网络
+Simple use case: connect to an open network
 
-向/etc/wpa_supplicant.conf加入 ：
+Add to /etc/wpa_supplicant.conf:
 
 ```
 network={
@@ -228,26 +221,26 @@ key_mgmt=NONE
 }
 ```
 
-初始化wpa_supplicant,执行 ：
+Initialize wpa_supplicant and execute:
 
 ```
 wpa_supplicant -B -d -i wlan0 -c /etc/wpa_supplicant.conf
 ```
 
-查看连接状态：
+Check the connection status:
 
 ```
 wpa_cli -i wlan0 status
 ```
 
-断开连接
+Disconnect
 
 ```
 wpa_cli -i wlan0 disconnect
 killall wpa_supplicant
 ```
 
-重新连接
+Reconnect
 
 ```
 wpa_cli -i wlan0 reconnect
@@ -255,21 +248,23 @@ wpa_cli -i wlan0 reconnect
 
 ### dhclient
 
-使用实例
+Usage example
 
-自动获取分配IP，并设置 
+Automatically obtain and assign IP, and set
 
 ```
 dhclient wlan0
 ```
 
-### ap模式产生热点
+### AP mode generates hotspot
 
 ```
 
-1）、ifconfig wlan0 up
-2）、hostapd -B /etc/jffs2/hostapd.conf
-3）、udhcpd /etc/jffs2/udhcpd.conf
-4）、tcpsvd 0 21 ftpd -w /data &
-```
+1), ifconfig wlan0 up
 
+2), hostapd -B /etc/jffs2/hostapd.conf
+
+3), udhcpd /etc/jffs2/udhcpd.conf
+
+4), tcpsvd 0 21 ftpd -w /data &
+```
