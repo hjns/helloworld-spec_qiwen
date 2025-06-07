@@ -1,37 +1,37 @@
-# 全称：Network File System
-# 作用：让同一网络上两个主机共享文件，像 ubuntu 和主机共享主机一样便利
-## 服务端上安装 nfs：
+# Full name：Network File System
+# Function: Let two hosts on the same network share files, just like Ubuntu and the host share the host
+## Install on the server nfs：
     1. ```sudo apt-get install nfs-kernel-server```
     2. ```sudo apt-get install nfs-common```
-        如果不能安装，需要换源
-    3. 编写配置文件
+        If you cannot install it, you need to change the source
+    3. Writing configuration files
         ```sudo vim /etc/exports```
-        配置内容如下：
+        The configuration content is as follows：
         ```/home/chenqiwen/nfs *(insecure,rw,sync,no_root_squash)```
-    4. 创建共享文件夹，路径要和配置文件的一样
-    5. 重启nfs服务
+    4. Create a shared folder, the path should be the same as the configuration file
+    5. Restart the nfs service
         ```sudo service nfs-kernel-server restart```
 
-## 客户端上安装nfs              
-1. 安装驱动
+## Install nfs on the client             
+1. Install the driver
 ```
 sudo apt-get install nfs-common
 ```
-2. 创建本地挂载目录
+2. Create a local mount directory
 ```
 mkdir /tmp/nfs
 ```
-3. 挂载贡献目录
+3. Mount the contribution directory
 ```
 mount -t nfs -o nolock 172.16.5.170:/home/chenqiwen/nfs /tmp/nfs
 ulimit -c unlimited
 echo "/tmp/nfs/%e-%p-%t.coredmp" > /proc/sys/kernel/core_pattern
 ```
 
-## 开发板配置nfs
+## Development board configuration nfs
 ~~~c
-开发板系统配置支持nfs,运行 nfs_start.sh 脚本启动 nfs 功能，
-启动nfs服务后挂载
+The development board system configuration supports nfs. Run the nfs_start.sh script to start the nfs function.
+Mount after starting the nfs service
 ```
 cd ~
 nfs_start.sh 
@@ -42,9 +42,9 @@ mount -t nfs -o nolock 172.16.5.170 :/home/chenqiwen/nfs /tmp/nfs
 cd /tmp/nfs
 ls
 ```
-以上命令可以写入脚本文件，开机运行脚本。
+The above commands can be written into a script file and run at startup.
 
-这时候，在开发板的/tmp/nfs 目录下就可以直接访问 172.16.5.170:/home/chenqiwen/nfs 的内容
+At this time, you can directly access the contents of 172.16.5.170:/home/chenqiwen/nfs in the /tmp/nfs directory of the development board.
 ~~~
 
 
