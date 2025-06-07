@@ -1,82 +1,82 @@
-### 概述
+### Overview
 
-SQlite是一个轻量级、开源、嵌入式关系数据库，
+SQlite is a lightweight, open source, embedded relational database.
 
-可移植性好、使用简单、很小、高效、不需要网络
+Good portability, simple to use, small, efficient, no network required.
 
-### 软件环境
+### Software Environment
 
 Ubuntu 18.04 、sqlite3 
 
-### 下载安装
+### Download and install
 
-安装
+Install
 
 ```
 sudo apt-get install sqlite3
 ```
 
-查看版本信息
+View version information
 
 ```
 sqlite3 -version
 ```
 
-### 数据库字段类型
+### Database field type
 
-### Ubuntu命令行使用sqlite3
+### Ubuntu command line using sqlite3
 
-sqlite库包含一个sqlite3的命令行，可以让用户手工输入并执行sqlite数据库SQL命令.
+The sqlite library includes a sqlite3 command line that allows users to manually enter and execute sqlite database SQL commands.
 
-打开一个数据库，没有则创建
+Open a database, or create one if it does not exist
 
 ```
-sqlite3 [数据库名.db]
+sqlite3 [database name.db]
 eg:
 sqlite3 department.db
 ```
 
-数据库创建一个表
+Create a table in the database
 
 ```c
-creat table [表名]
+creat table [table name]
 (	
-	[列名1] [数据类型] ["约束"]，
-	[列名2] [数据类型] ["约束"]，
+	[column name 1] [data type] ["constraint"],
+	[column name 2] [data type] ["constraint"],
 	...
-	[列名n] [数据类型] ["约束"]
+	[column name n] [data type] ["constraint"]
 );
 eg:
 CREATE TABLE library(
-number int "primary key",
-name varchar "not null",
-price real "default",
-type text "not null",
-amount int "not null"
+	number int "primary key",
+	name varchar "not null",
+	price real "default",
+	type text "not null",
+	amount int "not null"
 );
 ```
 
-删除一个表
+Deleting a table
 
 ```c
-drop table [表名];
+drop table [Table name];
 eg:
 drop table library;
 ```
 
-修改一个表的结构
+Modify the structure of a table
 
 ```
-修改表的名字：
-ALTER TABLE [表名] RENAME TO [新名字]
+Modify the name of the table：
+ALTER TABLE [Table name] RENAME TO [New Name]
 eg:
 sqlite> .table
 library
 sqlite> ALTER TABLE library RENAME TO library2;
 sqlite> .table
 library2
-增加字段：
-ALTER TABLE [表名] ADD [字段名] [字段类型]；
+Add Field：
+ALTER TABLE [table name] ADD [field name] [field type]；
 sqlite> .schema
 CREATE TABLE IF NOT EXISTS "library"(
 number int "primary key",
@@ -103,11 +103,11 @@ sqlite> SELECT * FROM library ;
 2|English|23.5|langue|562|note
 ```
 
-查看表的结构
+View the structure of the table
 
 ```c
-.schema	//查看所有表的结构
-.schema	[表名]	//查看某个表的结构
+.schema	// View the structure of all tables
+.schema	[Table name]	// View the structure of a table
 sqlite> .schema library
 CREATE TABLE library(
 number int "primary key",
@@ -118,7 +118,7 @@ amount int "not null"
 );
 ```
 
-查看表
+View Table
 
 ```
 .table	
@@ -126,39 +126,39 @@ amount int "not null"
 
 
 
-向表中增加数据
+Add data to the table
 
 ```c
-insert into [表名] values([值1], [值2]...);
+insert into [Table name] values([value 1], [value 2]...);
 eg:
 INSERT INTO library VALUES (
 01, "chinese", 23.5, "langue", 52);
 ```
 
-数据库的运算符
+Database Operators
 
 ```
-= 等于
-<> 不等于
-> 大于
-< 小于
-如果有多个条件：
-and 并且
-or 或者
+= equal to
+<> not equal to
+> greater than
+< less than
+If there are multiple conditions:
+and and
+or or
 ```
 
-从表中删除数据
+Deleting data from a table
 
 ```c
-DELETE FROM [表名] WHERE [列] [运算符] [值];
+DELETE FROM [table name] WHERE [column] [operator] [value];
 eg:
 DELETE FROM library WHERE name="English";
 ```
 
-修改表中数据
+Modify data in table
 
 ```c
-UPDATA [表名] SET [列名1]=[新值]，[列名2]=[新值]... WHERE [列名] [运算符] [值]；
+UPDATA [Table name] SET [Column name 1] = [new value], [Column name 2] = [new value]... WHERE [Column name] [Operator] [Value]；
 sqlite> select * from library ;
 1|chinese|23.5|langue|52
 sqlite> UPDATE library SET amount=236 WHERE name = "chinese";
@@ -166,93 +166,92 @@ sqlite> select * from library ;
 1|chinese|23.5|langue|236
 ```
 
-查找表中数据
+Lookup table data
 
 ```c
-select [列名1], [列名2], ... from [表名] where [列] [运算符] [值];
+select [column name 1], [column name 2], ... from [table name] where [column] [operator] [value];
 sqlite> SELECT * FROM library ;c
 1|chinese|23.5|langue|236
 ```
 
-### sqlite3C程序编译环境准备
+### sqlite3 C program compilation environment preparation
 
-1、需要准备sqlite3的源码
+1、You need to prepare the source code of sqlite3
 
 sqlite-autoconf-3110100
 
-2、代码编译
+2、Code Compilation
 
 ```c
 tar -zxvf sqlite-autoconf-3110100.tar.gz
 cd sqlite-autoconf-3110100
-./configure -prefix=[绝对路径] #-prefix用来指定sqlite目标路径
+./configure -prefix=[absolute path] #-prefix is ​​used to specify the sqlite target path
 make
 make install
-/*顺利执行后就会在指定路劲下生成
--bin:存放可执行文件
--include:头文件
--lib：库文件路径*/
+/* After successful execution, it will be generated under the specified path
+-bin: store executable files
+-include: header files
+-lib: library file path */
 ```
 
-3、移植
+3、Move to correct locations
 
 ```
-- 将bin目录下的文件拷贝到 /usr/local/bin
-- 将lib目录下的文件拷贝到 /usr/local/lib 拷贝过程需要特别注意软连接
+- Copy the files in the bin directory to /usr/local/bin
+- Copy the files in the lib directory to /usr/local/lib Pay special attention to the soft link during the copying process
 - include –> /usr/local/include
 - share –> /usr/local/share
 ```
 
-### sqlite3的C函数接口
+### C function interface of sqlite3
 
-**1、sqlite3_open: 用来打开或创建一个sqlite3数据库引擎的连接**
-在sqlite3数据库引擎中，用结构体sqlite3来表示 sqlite3的数据库引擎 的连接。
-我们在调用sqlite3_open这个函数时，它会给我们创建一个sqlite3数据库引擎的连接。
+**1、sqlite3_open: Used to open or create a connection to the sqlite3 database engine**
+In the sqlite3 database engine, the structure sqlite3 is used to represent the connection of the sqlite3 database engine.
+When we call the sqlite3_open function, it will create a connection to the sqlite3 database engine for us.
 
 ```c
 int sqlite3_open(
-            const char *filename, //database fiename, 你要打开或创建的数据库的文c件名
-            sqlite3 **ppdb;  //sqlite3这个结构体的二级指针
-        );
-返回值:
-    成功返回 SQLITE_OK, 并且ppdb指向新创建的sqlite3数据库引擎的连接
-    其他值，表示失败。
+	const char *filename, //database filename, The file name of the database you want to open or create
+	sqlite3 **ppdb; //Secondary pointer of the sqlite3 structure
+);
+
+Return Value:
+    If successful, SQLITE_OK is returned, and ppdb points to the connection of the newly created sqlite3 database engine.
+    Other values ​​indicate failure.
 ```
 
-#### 2、sqlite3_exec:操作一个SQL引擎的数据库系统，实际上就是在这个数据库引擎上执行SQL语句
+#### 2、sqlite3_exec: Operate a SQL engine database system, which actually executes SQL statements on this database engine
 
 ```c
 int sqlite3_exec(
-        sqlite * db; //指向sqlite3数据库系统引擎的连接
-        const char *sql; //你要执行的SQL语句的字符串
-        int (*callback)(void *, int, char **, char **), //函数指针，指向回调函数
-        void *, //将作为callback的第一个参数，传给回调函数
-        char **errmsg //指向错误字符串
-        );
-    返回值:
-        //成功返回0
-        //失败返回其他值，错误信息在errmsg
+        sqlite * db; //Connection to the sqlite3 database system engine
+	const char *sql; //String of the SQL statement you want to execute
+	int (*callback)(void *, int, char **, char **), //Function pointer, pointing to the callback function
+	void *, //Passed to the callback function as the first parameter of callback
+	char **errmsg //Pointing to the error string
+);
+
+    Return Value:
+        //Returns 0 if successful
+	// Returns other values ​​if failed, error information is in errmsg
         
-        int (*callback)(void *, int, char **, char **), //函数指针，指向回调函数
-        callback主要是在SQL语句为SELECT时用，SELECT返回的结果是一个二维表， 在
-        sqlite3_exec实现查询语句，每查到一条记录，就会把结果返回， 每查到一条符合
-        条件的记录，就调用callback指向的函数。
-            int (*callback)(void *,  //
-                            int,  	//结果中多少列
-                            char **, //char* column_value[], 指针数组，每列的值
-                            char **, //char* column_name[], 指针数组，每列的字段名
-                            )
+        int (*callback)(void *, int, char **, char **), //Function pointer, pointing to callback function. callback is mainly used when the SQL statement is SELECT. The result returned by SELECT is a two-dimensional table. In sqlite3_exec, the query statement is implemented. Every time a record is found, the result will be returned. Every time a record that meets the condition is found, the function pointed to by callback is called.
+	int (*callback)(void *, //
+	int, //How many columns in the result
+	char **, //char* column_value[], pointer array, value of each column
+	char **, //char* column_name[], pointer array, field name of each column
+)
 ```
 
-#### 3、关闭数据库连接
+#### 3、Close the database connection
 
 ```
 int sqlite3_close(sqlite3 *ppDb);
 ```
 
-### 使用sqlite3_exec()函数完成增删改查
+### Use the sqlite3_exec() function to complete the addition, deletion, modification and query
 
-增：
+add：
 
 ```c
 sqlite> select * from library;	
@@ -270,9 +269,9 @@ sqlite> select * from	library;
 3|math|34.0|langue|112
 ```
 
-删、改：略
+Delete, modify: Omitted
 
-查：
+search：
 
 ```c
 sqlite> select * from library;
