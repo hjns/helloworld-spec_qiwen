@@ -1,30 +1,30 @@
-## 关于WiFi的一些总结
+## Some summary about WiFi
 
-#### wifi 的加密方式
+#### wifi Encryption method
 
-1. ##### wep(有线等效加密）
+1. ##### wep(Wired Equivalent Privacy）
 
-   采用 wep 64位或者128位数据加密
+   Use wep 64-bit or 128-bit data encryption
 
 2. WPA-PSK[TKIP]
 
-   采用预共享密钥的 wi-fi 保护访问，采用 wpa-psk 标准加密技术，机密类型为 TKIP
+   Wi-Fi protected access with pre-shared key, using wpa-psk standard encryption technology, confidentiality type is TKIP
 
 3. WPA2-PSK[AES]
 
-   采用预共享密钥的 wifi 保护访问(版本2)，采用WPA2-PSK 标准加密技术，机密类型为AES
+   Wi-Fi Protected Access (version 2) with pre-shared key, WPA2-PSK standard encryption technology, AES encryption type
 
 4. WPA-PSK + WPA2-PSK
 
-   允许客户端使用 WPA-PSK 或 WPA2-PSK
+   Allow clients to use WPA-PSK or WPA2-PSK
 
 #### WPA(Wifi Protected Access)
 
-​	一种保护无线电脑网络(wifi)安全的系统，有 wpa 和 wpa2 两个标准。
+​	一A system for protecting the security of wireless computer networks (wifi), there are two standards: wpa and wpa2.
 
 #### WLAN(Wirless Local Area Network)
 
-​	无线局域网
+​	Wireless LAN
 
 
 
