@@ -1,29 +1,72 @@
-压缩解压缩命令.tar解包：tar xvf xxx.tar
-打包：tar cvf xxx.tar DirName
-（注：tar是打包，不是压缩！）
-.gz解压1：gunzip FileName.gz
-解压2：gzip -d FileName.gz
-压缩：gzip FileName
- .tar.gz 和 .tgz解压：tar zxvf FileName.tar.gz
-压缩：tar zcvf FileName.tar.gz DirName
-.bz2解压1：bzip2 -d FileName.bz2
-解压2：bunzip2 FileName.bz2
-压缩： bzip2 -z FileName
-.tar.bz2解压：tar jxvf FileName.tar.bz2
-压缩：tar jcvf FileName.tar.bz2 DirName
-.bz解压1：bzip2 -d FileName.bz
-解压2：bunzip2 FileName.bz
-.tar.bz解压：tar jxvf FileName.tar.bz
-压缩：未知
-.Z解压：uncompress FileName.Z
-压缩：compress FileName
- .tar.Z解压：tar Zxvf FileName.tar.Z
-压缩：tar Zcvf FileName.tar.Z DirName
-.zip解压：unzip FileName.zip
-压缩：zip FileName.zip DirName
-.rar解压：rar x FileName.rar
-压缩：rar a FileName.rar DirName
-.lha解压：lha -e FileName.lha
-压缩：lha -a FileName.lha FileName
-.rpm解包：rpm2cpio FileName.rpm | cpio -div
+### Compression and decompression commands.
 
+### .tar
+(Note: tar is packaging, not compression!)
+
+tar decompression: tar xvf xxx.tar
+
+Packaging: tar cvf xxx.tar DirName
+
+
+### .gz
+
+decompression 1: gunzip FileName.gz
+
+Decompression 2: gzip -d FileName.gz
+
+Compression: gzip FileName
+
+### .tar.gz and .tgz
+
+decompression: tar zxvf FileName.tar.gz
+
+Compression: tar zcvf FileName.tar.gz DirName
+
+### .bz2
+
+decompression 1: bzip2 -d FileName.bz2
+
+Decompression 2: bunzip2 FileName.bz2
+
+Compression: bzip2 -z FileName
+
+### .tar.bz2
+
+decompression: tar jxvf FileName.tar.bz2
+
+Compression: tar jcvf FileName.tar.bz2 DirName
+
+### .bz
+
+decompression 1: bzip2 -d FileName.bz
+
+Decompression 2: bunzip2 FileName.bz
+
+### .tar.bz
+
+decompression: tar jxvf FileName.tar.bz
+
+Compression: unknown
+
+### .Z
+
+decompression: uncompress FileName.Z
+
+Compression: compress FileName
+
+### .tar.Z
+
+decompression: tar Zxvf FileName.tar.Z
+
+Compression: tar Zcvf FileName.tar.Z DirName
+
+### .zip
+
+decompression: unzip FileName.zip
+
+Compression: zip FileName.zip DirName
+.rar decompression: rar x FileName.rar
+Compression: rar a FileName.rar DirName
+.lha decompression: lha -e FileName.lha
+Compression: lha -a FileName.lha FileName
+.rpm decompression: rpm2cpio FileName.rpm | cpio -div
