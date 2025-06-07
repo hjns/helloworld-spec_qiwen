@@ -1,64 +1,63 @@
-## 视频编解码中的YUV、RGB概念简单解析
+## A brief analysis of the concepts of YUV and RGB in video encoding and decoding
 
-### 前言
+### Preface
 
-YUV的出现是为了解决黑白电视和彩电兼容问题，以前黑白电视只有Y（灰阶值），把UV视做色度，加上UV信号就是彩电了
+The emergence of YUV is to solve the compatibility problem between black and white TV and color TV. In the past, black and white TV only had Y (grayscale value), and UV was regarded as chromaticity. Adding UV signal made it a color TV.
 
-### 一、RGB颜色空间
+### 1. RGB color space
 
-RGB红绿蓝三原色，任何颜色都可以用这三原色通过不同比例混合出来，三个分量的范围常见的都是8bit，当三个分量都是0，表示纯黑色；当都是255时，表示白色
+RGB is the three primary colors of red, green and blue. Any color can be mixed with these three primary colors in different proportions. The range of the three components is usually 8 bits. When all three components are 0, it means pure black; when all three components are 255, it means white.
 
-### 二、YUV颜色空间
+### 2. YUV color space
 
-YUV是用于电视系统的颜色表示方式，Y表示的亮度；U和V代表颜色色度的两个方面，分别是从红色与蓝色采样的信号；YUV颜色采样表示法是运动图像编码的采样表示法
+YUV is a color representation method used in television systems. Y represents brightness; U and V represent two aspects of color chromaticity, which are signals sampled from red and blue respectively; YUV color sampling representation is a sampling representation method for motion image coding
 
-### 三、RGB 与 YUV的转换
+### 3. Conversion between RGB and YUV
 
-两种颜色表示法都能表示颜色，它们可以相互转换。可以通过一定的公式转换
-
+Both color representations can represent colors, and they can be converted to each other. They can be converted through certain formulas
 ```
 Y =  0.299R  + 0.587G  + 0.114B
 U = -0.1687R - 0.3313G + 0.5B    + 128
 V =  0.5R    - 0.4187G - 0.0813B + 128
 ```
 
-### 四、视频采样和损耗
+### IV. Video sampling and loss
 
-从视频采集与处理的角度来说，一般的视频采集芯片输出的码流一般是YUV数据流的形式，而从视频处理（例如H.264、MPEG视频编解码）的角度来说，也是在原始YUV码流进行编码和解析；如果采集的资源是RGB，也需要转换为YUV。YUV格式有两大类：planar 和 packed
+From the perspective of video acquisition and processing, the code stream output by general video acquisition chips is generally in the form of YUV data stream, and from the perspective of video processing (such as H.264, MPEG video codec), it is also encoded and parsed in the original YUV code stream; if the acquired resource is RGB, it also needs to be converted to YUV. There are two major types of YUV formats: planar and packed
 
-区别：planar格式：先连续存储所有像素点的Y，紧接着存储所有的U、V
+Difference: planar format: first store the Y of all pixels continuously, then store all U and V
 
-packed格式：所有的像素点的YUV是连续交叉存储的
+packed format: the YUV of all pixels is stored continuously and crosswise
 
-### 五、YUV采样格式
+### 5. YUV sampling format
 
-减低对UV的采样率，但又不会降低视觉质量，因为人眼对于亮度会敏感度高，对于彩色信息的敏感度低，所以可以减少对UV的采样
+Reduce the sampling rate of UV, but will not reduce the visual quality, because the human eye is highly sensitive to brightness and less sensitive to color information, so the sampling of UV can be reduced
 
-#### YUV 4:4:4采样
+#### YUV 4:4:4 sampling
 
-意味着三个分量的采样比相同，在生成的图像中，像素点的每个分量都是8bit,每个像素点大小为24bit
-
-```
-假设图像样本为：[Y0 U0 V0][Y1 U1 V1][Y2 U2 V2]
-那采样的字节流就是： Y0 U0 V0 Y1 U1 V1 Y2 U2 V2
-```
-
-#### YUV 4:2:2采样
+It means that the sampling ratio of the three components is the same. In the generated image, each component of the pixel is 8 bits, and the size of each pixel is 24 bits
 
 ```
-每采样过一个像素点，都会采样其Y分量，而U、V分量就会间隔一个采样一个 
-假设图像样本为：[Y0 U0 V0][Y1 U1 V1][Y2 U2 V2]
-那采样的字节流就是： Y0 U0   Y1 V1   Y2 U2
+Assuming the image sample is: [Y0 U0 V0][Y1 U1 V1][Y2 U2 V2]
+Then the sampled byte stream is: Y0 U0 V0 Y1 U1 V1 Y2 U2 V2
 ```
 
-#### YUV 4:2:0采样
+#### YUV 4:2:2 sampling
 
 ```
-YUV 4:2:0采样，并不是指只采样U分量或V分量。而是指，在每一行扫描时，只扫描一种色度分量(U或者V)，和Y分量按照1：2的方式采样。比如第一行时候，采样Y分量和U分量，且比例为2：1，不采样V分量；第二行采样Y分量和V分量，且比例为2：1，不采样U分量。后面重复，以此类推
-假设图像像素为
+Each time a pixel is sampled, its Y component will be sampled, and the U and V components will be sampled one by one.
+Assuming the image sample is: [Y0 U0 V0][Y1 U1 V1][Y2 U2 V2]
+Then the sampled byte stream is: Y0 U0 Y1 V1 Y2 U2
+```
+
+#### YUV 4:2:0 sampling
+
+```
+YUV 4:2:0 sampling does not mean sampling only the U component or the V component. Instead, it means that when scanning each line, only one chroma component (U or V) is scanned, and the Y component is sampled in a 1:2 manner. For example, in the first line, the Y component and the U component are sampled, and the ratio is 2:1, and the V component is not sampled; the second line samples the Y component and the V component, and the ratio is 2:1, and the U component is not sampled. Repeat the following, and so on.
+Assume that the image pixels are
 [Y0 U0 V0][Y1 U1 V1][Y2 U2 V2][Y3 U3 V3]
 [Y4 U4 V4][Y5 U5 V5][Y6 U6 V6][Y7 U7 V7]
-那么采样的码流为：
+Then the sampled code stream is:
 Y0 U0 Y1 Y2 U2 Y3 Y4 Y5 Y6 V6 Y7
 ```
 
