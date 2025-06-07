@@ -1,14 +1,14 @@
-## 安装
+## Install
     ```sudo apt-get install samba samba-common```
 
-## 设置共享的目录权限
+## Set shared directory permissions
     ```sudo chomd 777 /home/china/share```
 
-## 配置samba
-    1. 修改配置文件
+## Configure samba
+    1. Modify the configuration file
     ```sudo vim /etc/samba/smb.conf```
     
-    2. 跳转到261 - 272行
+    2. Jump to lines 261 - 272
     ```
     [shhare]
     comment = share folder
@@ -24,15 +24,15 @@
     writable = yes
     ```
     
-## 添加用户
+## Adding Users
     ```sudo smbpasswd -a china```
-    同时会提示输入密码
+    You will be prompted to enter your password
 
-## 重启samba 服务
+## Restart samba service
     ```sudo /etc/init.d/smbd restart```
 
-## windows端
-    win + R打开运行窗口
+## Windows
+    win + R Open the Run window
     ``` \\192.168.10.231\share ```
-    输入刚添加的用户名和密码就可以访问共享文件了
+    Enter the username and password you just added to access the shared files.
     
