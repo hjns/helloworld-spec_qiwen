@@ -1,17 +1,16 @@
-# linux连接无线网络之 wpa_cli, wpa_supplicant
-    wpa_supplicant 软件包中包含客户端程序 wpa_cli, 通过它可以直接连接无线网络，
-    不需要通常的无线网络配置文件的方式，这在某些特殊情况下是有用的
-## 启动 wpa_supplicant
-    以 daemon 方式启动 wpa_supplicant:
+# Linux connects to wireless network wpa_cli, wpa_supplicant
+    The wpa_supplicant package contains the client program wpa_cli, which can be used to directly connect to a wireless network without the usual wireless network configuration file method, which is useful in some special cases.
+    
+## Start wpa_supplicant Start wpa_supplicant in daemon mode:
 ``` 
 wpa_supplicant -B -i wlan0 -D wext -c /etc/wpa_supplicant.conf
--B daemon 模式
--i 无线网卡名
--D 驱动类型
--c 配置文件目录    
+-B daemon mode
+-i wireless network card name
+-D driver type
+-c configuration file directory   
 ```
-    其中的 wlan0 为系统内的无线网卡的设备名。配置文件是 /etc/wpa_supplicant.conf ,
-    可以在文件中添加连接网络所需要的信息。以下是一个案例tuyav200
+    wlan0 is the device name of the wireless network card in the system. The configuration file is /etc/wpa_supplicant.conf ,
+and you can add the information needed to connect to the network in the file. The following is an example tuyav200
 ```
 ctrl_interface=/var/run/wpa_supplicant
 ap_scan=1
@@ -24,49 +23,48 @@ network={
     scan_ssid=1
 }
 ```
-    ssid wifi 名
-    psk WiFi 密码
+    ssid wifi name
+    psk WiFi Password
 
-## 启动 wpa_cli
+## Start wpa_cli
 ```
 wpa_cli -i wlan0
 ```
 
-## 增加网络，并设置网络参数
-    可以先用 status 命令查询网络连接状态，应该返回
+## Add a network and set network parameters
+You can first use the status command to query the network connection status, which should return
 ``` wpa_state=DISCONNECTED ```
-    可以先扫描网络来查看当前所有的wifi名称
-    scan 搜索无线网络
-    scan_result 显示搜索结果
-    用下面的命令增加网络，并设置相应的参数
+You can first scan the network to view all current wifi names
+scan Search for wireless networks
+scan_result Display search results
+Use the following command to add a network and set the corresponding parameters
 ``` add_network ```
-    该命令会返回新增加的网络ID,一般是0.下面的命令的第一个参数就是网络的id
+This command will return the newly added network ID, which is usually 0. The first parameter of the following command is the network ID
 ``` set_network 0 ssid "wyk" ```
-    wyk 是无线网名称，要用引号围起来
+wyk is the wireless network name, which should be enclosed in quotation marks
 ``` set_network 0 psk "password" ```
-    password 代表网络的密码，也要用引号围起来
-### 断开网络号
-``` disconnect 网络号 ```
-### 删除网线
-``` remove_network 网络号 ```
+password represents the network password, which should also be enclosed in quotation marks
+### Disconnect network number
+``` disconnect network number ```
+### Delete network cable
+``` remove_network network number```
 
-## 启用网络
+## Enable network
 ``` enable_network 0 ```
-    命令执行后，wpa_cli 会输出连接的过程信息，如果一切正常，最后输出
-``` CTRL-EVENT-CONNECTED... 
+After the command is executed, wpa_cli will output the connection process information. If everything is normal, it will output
+``` CTRL-EVENT-CONNECTED...
 
 wpa_supplicant -B -iwlan0 -Dwext -c /etc/jffs2/wpa_supplicant.conf
 
-
 ```
 
-### 配置网关命令
+### Configure gateway command
 
 ```
-sudo route add default gw [网关ip]
+sudo route add default gw [gateway ip]
 ```
 
-### 查看 网关命令 
+### View gateway command
 
 ```
 route
