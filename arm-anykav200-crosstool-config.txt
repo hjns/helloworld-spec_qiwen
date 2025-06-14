@@ -1,0 +1,46 @@
+gcc version 4.8.5 (anyka (gcc-4.8.5 + binutils-2.24 + ulcibc-0.9.33.2)(20170223)) 
+
+Using built-in specs.
+
+COLLECT_GCC=/opt/arm-anykav200-crosstool/usr/bin/arm-anykav200-linux-uclibcgnueabi-gcc.br_real
+
+COLLECT_LTO_WRAPPER=/opt/arm-anykav200-crosstool/usr/libexec/gcc/arm-anykav200-linux-uclibcgnueabi/4.8.5/lto-wrapper
+
+Target: arm-anykav200-linux-uclibcgnueabi
+
+Configured with:
+
+./configure
+--prefix=/opt/arm-anykav200-crosstool/usr
+--sysconfdir=/opt/arm-anykav200-crosstool/etc
+--enable-static
+--target=arm-anykav200-linux-uclibcgnueabi
+--with-sysroot=/opt/arm-anykav200-crosstool/usr/arm-anykav200-linux-uclibcgnueabi/sysroot
+--disable-__cxa_atexit
+--with-gnu-ld
+--disable-libssp
+--disable-multilib
+--with-gmp=/opt/arm-anykav200-crosstool/usr
+--with-mpfr=/opt/arm-anykav200-crosstool/usr
+--with-pkgversion='anyka (gcc-4.8.5 + binutils-2.24 + ulcibc-0.9.33.2)(20170223)'
+--with-bugurl=http://bugs.anyka.net/
+--disable-libsanitizer
+--enable-tls
+--disable-libmudflap
+--enable-threads
+--with-mpc=/opt/arm-anykav200-crosstool/usr
+--without-isl
+--without-cloog
+--with-float=soft
+--disable-decimal-float
+--with-abi=aapcs-linux
+--with-cpu=arm926ej-s
+--with-float=soft
+--with-mode=arm
+--enable-languages=c,c++
+--with-build-time-tools=/opt/arm-anykav200-crosstool/usr/arm-anykav200-linux-uclibcgnueabi/bin
+--enable-shared
+--disable-libgomp
+
+Thread model: posix
+
